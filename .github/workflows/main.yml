@@ -1,0 +1,38 @@
+name: Deploy Flutter Web to S3
+
+# Déclenche le pipeline sur push dans main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Récupérer le code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Installer Flutter compatible Dart 3.7.2+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.4'
+
+      # 3️⃣ Build Flutter Web
+      - name: Build Flutter Web
+        run: flutter build web --release
+
+      # 4️⃣ Configurer AWS
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # 5️⃣ Déployer sur S3
+      - name: Sync files to S3
+        run: aws s3 sync build/web s3://${{ secrets.AWS_S3_BUCKET }} --delete

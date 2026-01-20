@@ -1,0 +1,25 @@
+name: CI - Build automatique
+
+on:
+  push:
+    branches: [ "dev" ]   # adapte si tu travailles sur main/master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v3
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Installer dépendances backend
+        run: npm install
+        working-directory: backend
+
+      - name: Vérifier le lancement
+        run: node -v && npm -v && echo "Build terminé avec succès !"

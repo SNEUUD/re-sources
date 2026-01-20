@@ -65,8 +65,7 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
 
   Future<List<Category>> fetchCategories() async {
     final response = await http.get(
-      Uri.parse('http://chris-crp.freeboxos.fr:3000/categories'),
-
+      Uri.parse('http://chris-crp.freeboxos.fr/api/categories'),
     );
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
@@ -100,10 +99,10 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
     setState(() => isLoading = true);
 
     final String? imageBase64 =
-    _selectedImageBytes != null ? base64Encode(_selectedImageBytes!) : null;
+        _selectedImageBytes != null ? base64Encode(_selectedImageBytes!) : null;
 
     final response = await http.post(
-      Uri.parse('http://chris-crp.freeboxos.fr:3000/resources'),
+      Uri.parse('http://chris-crp.freeboxos.fr/api/resources'),
 
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
@@ -126,7 +125,7 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
       );
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const HomePage()),
-            (route) => false,
+        (route) => false,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -154,10 +153,7 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
       appBar: AppBar(
         title: Text(
           'Créer une ressource',
-          style: TextStyle(
-            color: bleuFrance,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: bleuFrance, fontWeight: FontWeight.w600),
         ),
         backgroundColor: Colors.white,
         foregroundColor: bleuFrance,
@@ -167,7 +163,7 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) => const HomePage()),
-                  (route) => false,
+              (route) => false,
             );
           },
         ),
@@ -226,18 +222,25 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                         labelStyle: TextStyle(color: grisFrance),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: grisFrance.withOpacity(0.3)),
+                          borderSide: BorderSide(
+                            color: grisFrance.withOpacity(0.3),
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: bleuFrance, width: 2),
+                          borderSide: const BorderSide(
+                            color: bleuFrance,
+                            width: 2,
+                          ),
                         ),
                         contentPadding: EdgeInsets.all(isDesktop ? 16 : 12),
                       ),
                       style: TextStyle(fontSize: isDesktop ? 16 : 14),
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Veuillez entrer un titre'
-                          : null,
+                      validator:
+                          (value) =>
+                              value == null || value.isEmpty
+                                  ? 'Veuillez entrer un titre'
+                                  : null,
                       onSaved: (value) => _title = value!,
                     ),
                     const SizedBox(height: 24),
@@ -249,20 +252,27 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                         labelStyle: TextStyle(color: grisFrance),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: grisFrance.withOpacity(0.3)),
+                          borderSide: BorderSide(
+                            color: grisFrance.withOpacity(0.3),
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: bleuFrance, width: 2),
+                          borderSide: const BorderSide(
+                            color: bleuFrance,
+                            width: 2,
+                          ),
                         ),
                         contentPadding: EdgeInsets.all(isDesktop ? 16 : 12),
                         alignLabelWithHint: true,
                       ),
                       maxLines: isDesktop ? 6 : 5,
                       style: TextStyle(fontSize: isDesktop ? 16 : 14),
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Veuillez entrer un message'
-                          : null,
+                      validator:
+                          (value) =>
+                              value == null || value.isEmpty
+                                  ? 'Veuillez entrer un message'
+                                  : null,
                       onSaved: (value) => _message = value!,
                     ),
                     const SizedBox(height: 24),
@@ -271,16 +281,21 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                     FutureBuilder<List<Category>>(
                       future: futureCategories,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Container(
                             height: isDesktop ? 64 : 56,
                             decoration: BoxDecoration(
-                              border: Border.all(color: grisFrance.withOpacity(0.3)),
+                              border: Border.all(
+                                color: grisFrance.withOpacity(0.3),
+                              ),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Center(
                               child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(bleuFrance),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  bleuFrance,
+                                ),
                               ),
                             ),
                           );
@@ -288,7 +303,9 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                           return Container(
                             padding: EdgeInsets.all(isDesktop ? 16 : 12),
                             decoration: BoxDecoration(
-                              border: Border.all(color: rougeMarianne.withOpacity(0.3)),
+                              border: Border.all(
+                                color: rougeMarianne.withOpacity(0.3),
+                              ),
                               borderRadius: BorderRadius.circular(8),
                               color: rougeMarianne.withOpacity(0.05),
                             ),
@@ -300,11 +317,14 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                               ),
                             ),
                           );
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return Container(
                             padding: EdgeInsets.all(isDesktop ? 16 : 12),
                             decoration: BoxDecoration(
-                              border: Border.all(color: grisFrance.withOpacity(0.3)),
+                              border: Border.all(
+                                color: grisFrance.withOpacity(0.3),
+                              ),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
@@ -327,26 +347,34 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                               labelStyle: TextStyle(color: grisFrance),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(color: grisFrance.withOpacity(0.3)),
+                                borderSide: BorderSide(
+                                  color: grisFrance.withOpacity(0.3),
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(color: bleuFrance, width: 2),
+                                borderSide: const BorderSide(
+                                  color: bleuFrance,
+                                  width: 2,
+                                ),
                               ),
-                              contentPadding: EdgeInsets.all(isDesktop ? 16 : 12),
+                              contentPadding: EdgeInsets.all(
+                                isDesktop ? 16 : 12,
+                              ),
                             ),
                             style: TextStyle(
                               fontSize: isDesktop ? 16 : 14,
                               color: Colors.black87,
                             ),
-                            items: categories
-                                .map(
-                                  (cat) => DropdownMenuItem<String>(
-                                value: cat.nomCategorie,
-                                child: Text(cat.nomCategorie),
-                              ),
-                            )
-                                .toList(),
+                            items:
+                                categories
+                                    .map(
+                                      (cat) => DropdownMenuItem<String>(
+                                        value: cat.nomCategorie,
+                                        child: Text(cat.nomCategorie),
+                                      ),
+                                    )
+                                    .toList(),
                             onChanged: (String? newValue) {
                               setState(() {
                                 _category = newValue!;
@@ -363,14 +391,16 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                       padding: EdgeInsets.all(isDesktop ? 20 : 16),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: _selectedImageBytes != null
-                              ? bleuFrance.withOpacity(0.3)
-                              : grisFrance.withOpacity(0.3),
+                          color:
+                              _selectedImageBytes != null
+                                  ? bleuFrance.withOpacity(0.3)
+                                  : grisFrance.withOpacity(0.3),
                         ),
                         borderRadius: BorderRadius.circular(8),
-                        color: _selectedImageBytes != null
-                            ? bleuFrance.withOpacity(0.02)
-                            : Colors.grey.withOpacity(0.02),
+                        color:
+                            _selectedImageBytes != null
+                                ? bleuFrance.withOpacity(0.02)
+                                : Colors.grey.withOpacity(0.02),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -387,7 +417,9 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                                   _selectedImageBytes != null
                                       ? 'Modifier l\'image'
                                       : 'Ajouter une image',
-                                  style: TextStyle(fontSize: isDesktop ? 16 : 14),
+                                  style: TextStyle(
+                                    fontSize: isDesktop ? 16 : 14,
+                                  ),
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: bleuFrance,
@@ -444,7 +476,9 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: grisFrance.withOpacity(0.2)),
+                                border: Border.all(
+                                  color: grisFrance.withOpacity(0.2),
+                                ),
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
@@ -465,23 +499,23 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         onPressed: isLoading ? null : _submitForm,
-                        icon: isLoading
-                            ? SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white.withOpacity(0.8),
-                            ),
-                          ),
-                        )
-                            : Icon(
-                          Icons.send,
-                          size: isDesktop ? 20 : 18,
-                        ),
+                        icon:
+                            isLoading
+                                ? SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white.withOpacity(0.8),
+                                    ),
+                                  ),
+                                )
+                                : Icon(Icons.send, size: isDesktop ? 20 : 18),
                         label: Text(
-                          isLoading ? 'Enregistrement...' : 'Enregistrer la ressource',
+                          isLoading
+                              ? 'Enregistrement...'
+                              : 'Enregistrer la ressource',
                           style: TextStyle(
                             fontSize: isDesktop ? 16 : 14,
                             fontWeight: FontWeight.w600,

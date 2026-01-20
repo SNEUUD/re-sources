@@ -61,13 +61,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
       });
     } else {
       setState(() {
-        filteredCategories = allCategories
-            .where(
-              (category) => category.nomCategorie.toLowerCase().contains(
-            query.toLowerCase(),
-          ),
-        )
-            .toList();
+        filteredCategories =
+            allCategories
+                .where(
+                  (category) => category.nomCategorie.toLowerCase().contains(
+                    query.toLowerCase(),
+                  ),
+                )
+                .toList();
       });
     }
   }
@@ -75,8 +76,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Future<List<Category>> fetchCategories() async {
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/categories'),
-
+        Uri.parse('http://chris-crp.freeboxos.fr/api/categories'),
       );
 
       if (response.statusCode == 200) {
@@ -133,7 +133,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     onPressed: () {
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (_) => const HomePage()),
-                            (route) => false,
+                        (route) => false,
                       );
                     },
                     icon: const Icon(
@@ -204,14 +204,16 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Erreur: ${snapshot.error}'));
-                    } else if (!snapshot.hasData || filteredCategories.isEmpty) {
+                    } else if (!snapshot.hasData ||
+                        filteredCategories.isEmpty) {
                       return const Center(
                         child: Text('Aucune catégorie trouvée'),
                       );
                     } else {
-                      List<Category> categoriesToDisplay = showAllCategories
-                          ? filteredCategories
-                          : filteredCategories.take(6).toList();
+                      List<Category> categoriesToDisplay =
+                          showAllCategories
+                              ? filteredCategories
+                              : filteredCategories.take(6).toList();
 
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -267,11 +269,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   Widget _buildCategoryCard(
-      String title,
-      String description,
-      Color bgColor,
-      Color buttonColor,
-      ) {
+    String title,
+    String description,
+    Color bgColor,
+    Color buttonColor,
+  ) {
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -290,7 +292,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
         color: bgColor,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: IntrinsicHeight(  // Permet d'ajuster la hauteur au contenu
+          child: IntrinsicHeight(
+            // Permet d'ajuster la hauteur au contenu
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -319,8 +322,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              CategoryResourcesPage(nomCategorie: title),
+                          builder:
+                              (context) =>
+                                  CategoryResourcesPage(nomCategorie: title),
                         ),
                       );
                     },

@@ -11,7 +11,6 @@ class ResourcesUserView extends StatefulWidget {
   State<ResourcesUserView> createState() => _ResourcesUserViewState();
 }
 
-
 class _ResourcesUserViewState extends State<ResourcesUserView>
     with TickerProviderStateMixin {
   List<dynamic> ressources = [];
@@ -54,8 +53,7 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
 
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/ressources/user/$userId'),
-
+        Uri.parse('http://chris-crp.freeboxos.fr/api/ressources/user/$userId'),
       );
 
       if (response.statusCode == 200) {
@@ -93,8 +91,9 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
     if (confirm == true) {
       try {
         final response = await http.delete(
-          Uri.parse('http://chris-crp.freeboxos.fr:3000/ressources/$idRessource'),
-
+          Uri.parse(
+            'http://chris-crp.freeboxos.fr/api/ressources/$idRessource',
+          ),
         );
 
         if (response.statusCode == 200) {
@@ -175,8 +174,7 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
       builder: (ctx) {
         fetchCategories() async {
           final response = await http.get(
-            Uri.parse('http://chris-crp.freeboxos.fr:3000/categories'),
-
+            Uri.parse('http://chris-crp.freeboxos.fr/api/categories'),
           );
           if (response.statusCode == 200) {
             final List<dynamic> data = jsonDecode(response.body);
@@ -492,7 +490,9 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
   ) async {
     try {
       final response = await http.put(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/ressources/${r['idRessource']}'),
+        Uri.parse(
+          'http://chris-crp.freeboxos.fr/api/ressources/${r['idRessource']}',
+        ),
 
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
@@ -738,22 +738,25 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
                           ),
                           const SizedBox(height: 12),
                           if (r['imageRessource'] != null)
-  Container(
-    margin: const EdgeInsets.only(top: 12),
-    height: 150,
-    width: double.infinity,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(12),
-      color: Colors.grey[200],
-    ),
-    clipBehavior: Clip.hardEdge,
-    child: Image.memory(
-      base64Decode(r['imageRessource']),
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) =>
-          const Center(child: Text("Erreur de chargement")),
-    ),
-  ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 12),
+                              height: 150,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.grey[200],
+                              ),
+                              clipBehavior: Clip.hardEdge,
+                              child: Image.memory(
+                                base64Decode(r['imageRessource']),
+                                fit: BoxFit.cover,
+                                errorBuilder:
+                                    (context, error, stackTrace) =>
+                                        const Center(
+                                          child: Text("Erreur de chargement"),
+                                        ),
+                              ),
+                            ),
 
                           const SizedBox(height: 16),
                           Row(

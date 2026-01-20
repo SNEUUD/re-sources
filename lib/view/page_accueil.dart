@@ -23,8 +23,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _fetchCategories() async {
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/categories'),
-
+        Uri.parse('http://chris-crp.freeboxos.fr/api/categories'),
       );
       if (response.statusCode == 200) {
         setState(() {
@@ -109,7 +108,8 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
+                          builder: (context) => const LoginPage(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -118,8 +118,10 @@ class _HomePageState extends State<HomePage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
                     ),
                     child: const Text("Se connecter / S'inscrire"),
                   ),
@@ -166,7 +168,9 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 15),
+                              horizontal: 30,
+                              vertical: 15,
+                            ),
                           ),
                           child: const Text("Rejoins l'aventure !"),
                         ),
@@ -209,14 +213,15 @@ class _HomePageState extends State<HomePage> {
                   spacing: 20,
                   runSpacing: 20,
                   alignment: WrapAlignment.center,
-                  children: _categories.map<Widget>((cat) {
-                    return _buildCategoryButton(
-                      context,
-                      cat['nomCatégorie'],
-                      Colors.blue.shade50,
-                      Colors.blue.shade800,
-                    );
-                  }).toList(),
+                  children:
+                      _categories.map<Widget>((cat) {
+                        return _buildCategoryButton(
+                          context,
+                          cat['nomCatégorie'],
+                          Colors.blue.shade50,
+                          Colors.blue.shade800,
+                        );
+                      }).toList(),
                 ),
               ),
             const SizedBox(height: 30),
@@ -230,8 +235,10 @@ class _HomePageState extends State<HomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 10,
+                ),
               ),
               child: const Text("En voir plus"),
             ),
@@ -243,7 +250,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCategoryButton(
-      BuildContext context, String text, Color bgColor, Color textColor) {
+    BuildContext context,
+    String text,
+    Color bgColor,
+    Color textColor,
+  ) {
     return InkWell(
       onTap: () {
         print('Catégorie cliquée: $text');
@@ -259,10 +270,7 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
           ),
         ),
       ),

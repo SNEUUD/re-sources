@@ -53,15 +53,18 @@ class _AllResourcesViewState extends State<AllResourcesView> {
   Future<List<Map<String, dynamic>>> fetchCommentaires(int ressourceId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/ressources/$ressourceId/commentaires'),
-  
+        Uri.parse(
+          'http://chris-crp.freeboxos.fr/api/ressources/$ressourceId/commentaires',
+        ),
       );
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         return data.cast<Map<String, dynamic>>();
       } else {
-        throw Exception("Erreur chargement commentaires (${response.statusCode})");
+        throw Exception(
+          "Erreur chargement commentaires (${response.statusCode})",
+        );
       }
     } catch (e) {
       throw Exception("Erreur réseau: $e");
@@ -82,7 +85,9 @@ class _AllResourcesViewState extends State<AllResourcesView> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/ressources/$ressourceId/commentaire'),
+        Uri.parse(
+          'http://chris-crp.freeboxos.fr/api/ressources/$ressourceId/commentaire',
+        ),
 
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'userId': userId, 'message': message.trim()}),
@@ -105,8 +110,9 @@ class _AllResourcesViewState extends State<AllResourcesView> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/ressources/$ressourceId/likes/$userId'),
-
+        Uri.parse(
+          'http://chris-crp.freeboxos.fr/api/ressources/$ressourceId/likes/$userId',
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -130,7 +136,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/interactions'),
+        Uri.parse('http://chris-crp.freeboxos.fr/api/interactions'),
 
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'userId': userId, 'ressourceId': ressourceId}),
@@ -147,8 +153,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
   Future<List<dynamic>> fetchAllResources() async {
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/ressourcesAll'),
-
+        Uri.parse('http://chris-crp.freeboxos.fr/api/ressourcesAll'),
       );
 
       if (response.statusCode == 200) {
@@ -166,17 +171,19 @@ class _AllResourcesViewState extends State<AllResourcesView> {
     switch (sortBy) {
       case 'dateDesc':
         ressources.sort(
-              (a, b) => (b['dateRessource'] ?? '').compareTo(a['dateRessource'] ?? ''),
+          (a, b) =>
+              (b['dateRessource'] ?? '').compareTo(a['dateRessource'] ?? ''),
         );
         break;
       case 'dateAsc':
         ressources.sort(
-              (a, b) => (a['dateRessource'] ?? '').compareTo(b['dateRessource'] ?? ''),
+          (a, b) =>
+              (a['dateRessource'] ?? '').compareTo(b['dateRessource'] ?? ''),
         );
         break;
       case 'titre':
         ressources.sort(
-              (a, b) => (a['titreRessource'] ?? '')
+          (a, b) => (a['titreRessource'] ?? '')
               .toString()
               .toLowerCase()
               .compareTo((b['titreRessource'] ?? '').toString().toLowerCase()),
@@ -184,7 +191,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
         break;
       case 'categorie':
         ressources.sort(
-              (a, b) => (a['nomCatégorie'] ?? '')
+          (a, b) => (a['nomCatégorie'] ?? '')
               .toString()
               .toLowerCase()
               .compareTo((b['nomCatégorie'] ?? '').toString().toLowerCase()),
@@ -206,9 +213,12 @@ class _AllResourcesViewState extends State<AllResourcesView> {
   List<dynamic> filterResources(List<dynamic> ressources) {
     if (searchQuery.isEmpty) return ressources;
     return ressources.where((ressource) {
-      final titre = (ressource['titreRessource'] ?? '').toString().toLowerCase();
-      final description = (ressource['messageRessource'] ?? '').toString().toLowerCase();
-      final categorie = (ressource['nomCatégorie'] ?? '').toString().toLowerCase();
+      final titre =
+          (ressource['titreRessource'] ?? '').toString().toLowerCase();
+      final description =
+          (ressource['messageRessource'] ?? '').toString().toLowerCase();
+      final categorie =
+          (ressource['nomCatégorie'] ?? '').toString().toLowerCase();
       return titre.contains(searchQuery) ||
           description.contains(searchQuery) ||
           categorie.contains(searchQuery);
@@ -228,7 +238,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
     return Center(
       child: Container(
         padding: const EdgeInsets.all(24), // Réduit pour mobile
-        margin: const EdgeInsets.all(16),  // Réduit pour mobile
+        margin: const EdgeInsets.all(16), // Réduit pour mobile
         constraints: const BoxConstraints(maxWidth: 600),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -281,7 +291,10 @@ class _AllResourcesViewState extends State<AllResourcesView> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: bleuFrance,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Réduit
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ), // Réduit
               ),
             ),
           ],
@@ -290,11 +303,15 @@ class _AllResourcesViewState extends State<AllResourcesView> {
     );
   }
 
-  Widget _buildEmptyState({required String title, required String subtitle, required IconData icon}) {
+  Widget _buildEmptyState({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+  }) {
     return Center(
       child: Container(
         padding: const EdgeInsets.all(24), // Réduit pour mobile
-        margin: const EdgeInsets.all(16),  // Réduit pour mobile
+        margin: const EdgeInsets.all(16), // Réduit pour mobile
         constraints: const BoxConstraints(maxWidth: 600),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -346,7 +363,10 @@ class _AllResourcesViewState extends State<AllResourcesView> {
   Widget _buildControlsBar() {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12), // Réduit
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 12,
+      ), // Réduit
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -385,10 +405,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                         value: 'dateAsc',
                         child: Text('Date (plus anciennes)'),
                       ),
-                      DropdownMenuItem(
-                        value: 'titre',
-                        child: Text('Titre'),
-                      ),
+                      DropdownMenuItem(value: 'titre', child: Text('Titre')),
                       DropdownMenuItem(
                         value: 'categorie',
                         child: Text('Catégorie'),
@@ -413,13 +430,13 @@ class _AllResourcesViewState extends State<AllResourcesView> {
               style: const TextStyle(fontSize: 14),
               decoration: const InputDecoration(
                 hintText: "Rechercher une ressource...",
-                hintStyle: TextStyle(
-                  color: Color(0xFF999999),
-                  fontSize: 14,
-                ),
+                hintStyle: TextStyle(color: Color(0xFF999999), fontSize: 14),
                 prefixIcon: Icon(Icons.search, color: grisFrance, size: 20),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 16,
+                ),
               ),
             ),
           ),
@@ -429,12 +446,16 @@ class _AllResourcesViewState extends State<AllResourcesView> {
   }
 
   // CARTE DE RESSOURCE ADAPTÉE MOBILE
-  Widget _buildResourceCard(dynamic ressource, List<Map<String, dynamic>> comments) {
+  Widget _buildResourceCard(
+    dynamic ressource,
+    List<Map<String, dynamic>> comments,
+  ) {
     final ressourceId = ressource['idRessource'];
     final auteur = ressource['pseudoUtilisateur'] ?? 'Auteur inconnu';
 
     Widget? imageWidget;
-    if (ressource['imageRessource'] != null && ressource['imageRessource'].isNotEmpty) {
+    if (ressource['imageRessource'] != null &&
+        ressource['imageRessource'].isNotEmpty) {
       try {
         imageWidget = ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
@@ -479,7 +500,10 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                   children: [
                     if (ressource['nomCatégorie'] != null)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: bleuCumulus,
                           borderRadius: BorderRadius.circular(6),
@@ -496,18 +520,12 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                     const SizedBox(width: 8),
                     Text(
                       "par $auteur",
-                      style: const TextStyle(
-                        color: grisFrance,
-                        fontSize: 12,
-                      ),
+                      style: const TextStyle(color: grisFrance, fontSize: 12),
                     ),
                     const Spacer(),
                     Text(
                       formatDateTime(ressource['dateRessource'] ?? ''),
-                      style: const TextStyle(
-                        color: grisFrance,
-                        fontSize: 12,
-                      ),
+                      style: const TextStyle(color: grisFrance, fontSize: 12),
                     ),
                   ],
                 ),
@@ -525,10 +543,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                 // Description
                 Text(
                   ressource['messageRessource'] ?? '',
-                  style: const TextStyle(
-                    color: grisFrance,
-                    fontSize: 14,
-                  ),
+                  style: const TextStyle(color: grisFrance, fontSize: 14),
                 ),
                 const SizedBox(height: 12),
                 // Boutons d'interaction
@@ -543,9 +558,10 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                             likedStatus[ressourceId] == true
                                 ? Icons.favorite
                                 : Icons.favorite_border,
-                            color: likedStatus[ressourceId] == true
-                                ? rougeMarianne
-                                : grisFrance,
+                            color:
+                                likedStatus[ressourceId] == true
+                                    ? rougeMarianne
+                                    : grisFrance,
                             size: 20,
                           ),
                           const SizedBox(width: 4),
@@ -565,7 +581,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                       onTap: () {
                         setState(() {
                           showAllComments[ressourceId] =
-                          !(showAllComments[ressourceId] ?? false);
+                              !(showAllComments[ressourceId] ?? false);
                         });
                       },
                       child: const Row(
@@ -578,10 +594,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                           SizedBox(width: 4),
                           Text(
                             'Commenter',
-                            style: TextStyle(
-                              color: grisFrance,
-                              fontSize: 14,
-                            ),
+                            style: TextStyle(color: grisFrance, fontSize: 14),
                           ),
                         ],
                       ),
@@ -592,8 +605,9 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                 if (showAllComments[ressourceId] == true) ...[
                   const SizedBox(height: 12),
                   TextField(
-                    controller: commentControllers[ressourceId] ??=
-                        TextEditingController(),
+                    controller:
+                        commentControllers[ressourceId] ??=
+                            TextEditingController(),
                     decoration: InputDecoration(
                       hintText: "Écrire un commentaire...",
                       suffixIcon: IconButton(
@@ -628,7 +642,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) => const HomePage()),
-                  (route) => false,
+              (route) => false,
             );
           },
         ),
@@ -651,7 +665,8 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return _buildEmptyState(
                       title: "Aucune ressource trouvée",
-                      subtitle: "Essayez de modifier votre recherche ou vos filtres.",
+                      subtitle:
+                          "Essayez de modifier votre recherche ou vos filtres.",
                       icon: Icons.info_outline,
                     );
                   } else {
@@ -659,7 +674,8 @@ class _AllResourcesViewState extends State<AllResourcesView> {
                     if (filtered.isEmpty) {
                       return _buildEmptyState(
                         title: "Aucun résultat",
-                        subtitle: "Aucune ressource ne correspond à votre recherche.",
+                        subtitle:
+                            "Aucune ressource ne correspond à votre recherche.",
                         icon: Icons.search_off,
                       );
                     }

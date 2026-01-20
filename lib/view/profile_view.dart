@@ -6,7 +6,6 @@ import 'layout/header.dart';
 import 'layout/footer.dart';
 import 'resources_user_view.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -65,14 +64,16 @@ class _ProfilePageState extends State<ProfilePage> {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Impossible de récupérer l\'ID utilisateur')),
+        const SnackBar(
+          content: Text('Impossible de récupérer l\'ID utilisateur'),
+        ),
       );
       return;
     }
 
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/profil/$userId'),
+        Uri.parse('http://chris-crp.freeboxos.fr/api/profil/$userId'),
       );
 
       if (response.statusCode == 200) {
@@ -104,9 +105,9 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur de connexion: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erreur de connexion: $e')));
     }
   }
 
@@ -123,14 +124,16 @@ class _ProfilePageState extends State<ProfilePage> {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Impossible de récupérer l\'ID utilisateur')),
+        const SnackBar(
+          content: Text('Impossible de récupérer l\'ID utilisateur'),
+        ),
       );
       return;
     }
 
     try {
       final response = await http.put(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/profil/$userId/edit'),
+        Uri.parse('http://chris-crp.freeboxos.fr/api/profil/$userId/edit'),
 
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -161,16 +164,20 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur lors de la mise à jour: ${response.statusCode}')),
+          SnackBar(
+            content: Text(
+              'Erreur lors de la mise à jour: ${response.statusCode}',
+            ),
+          ),
         );
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur de connexion: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erreur de connexion: $e')));
     }
   }
 
@@ -187,7 +194,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (newPasswordController.text != confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Les nouveaux mots de passe ne correspondent pas')),
+        const SnackBar(
+          content: Text('Les nouveaux mots de passe ne correspondent pas'),
+        ),
       );
       return;
     }
@@ -204,14 +213,16 @@ class _ProfilePageState extends State<ProfilePage> {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Impossible de récupérer l\'ID utilisateur')),
+        const SnackBar(
+          content: Text('Impossible de récupérer l\'ID utilisateur'),
+        ),
       );
       return;
     }
 
     try {
       final response = await http.put(
-        Uri.parse('http://chris-crp.freeboxos.fr:3000/profil/$userId/password'),
+        Uri.parse('http://chris-crp.freeboxos.fr/api/profil/$userId/password'),
 
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -238,16 +249,20 @@ class _ProfilePageState extends State<ProfilePage> {
       } else {
         print('Réponse du serveur: ${response.body}');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur lors de la mise à jour du mot de passe: ${response.statusCode}')),
+          SnackBar(
+            content: Text(
+              'Erreur lors de la mise à jour du mot de passe: ${response.statusCode}',
+            ),
+          ),
         );
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur de connexion: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erreur de connexion: $e')));
     }
   }
 
@@ -323,7 +338,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     padding: EdgeInsets.all(isMobile ? 16 : 22),
                     decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xFF0000A0)), // Bordure bleue
+                      border: Border.all(
+                        color: const Color(0xFF0000A0),
+                      ), // Bordure bleue
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(
@@ -331,80 +348,93 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         // Padding pour la section photo et nom
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                          child: isMobile
-                              ? Column(
-                            children: [
-                              // Avatar rond bleu
-                              Container(
-                                width: 60,
-                                height: 60,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF0000A0), // Bleu foncé
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'OG',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              // Nom avec style bleu
-                              Text(
-                                '${prenomController.text} ${nomController.text}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF0000A0), // Bleu foncé
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          )
-                              : Row(
-                            children: [
-                              // Avatar rond bleu
-                              Container(
-                                width: 60,
-                                height: 60,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF0000A0), // Bleu foncé
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'OG',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              // Nom avec style bleu
-                              Text(
-                                '${prenomController.text} ${nomController.text}',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF0000A0), // Bleu foncé
-                                ),
-                              ),
-                            ],
+                          padding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding,
                           ),
+                          child:
+                              isMobile
+                                  ? Column(
+                                    children: [
+                                      // Avatar rond bleu
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: const BoxDecoration(
+                                          color: Color(
+                                            0xFF0000A0,
+                                          ), // Bleu foncé
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            'OG',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      // Nom avec style bleu
+                                      Text(
+                                        '${prenomController.text} ${nomController.text}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(
+                                            0xFF0000A0,
+                                          ), // Bleu foncé
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  )
+                                  : Row(
+                                    children: [
+                                      // Avatar rond bleu
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: const BoxDecoration(
+                                          color: Color(
+                                            0xFF0000A0,
+                                          ), // Bleu foncé
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            'OG',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      // Nom avec style bleu
+                                      Text(
+                                        '${prenomController.text} ${nomController.text}',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(
+                                            0xFF0000A0,
+                                          ), // Bleu foncé
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                         ),
                         const SizedBox(height: 16),
                         // Padding pour le texte descriptif
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding,
+                          ),
                           child: Text(
                             'Vos informations sont confidentielles et utilisées uniquement dans le cadre de la plateforme (RE)SOURCES RELATIONNELLES. Vous avez la possibilité de les modifier à tout moment.',
                             style: TextStyle(
@@ -420,7 +450,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const ResourcesUserView(),
+                                  builder:
+                                      (context) => const ResourcesUserView(),
                                 ),
                               );
                             },
@@ -430,8 +461,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               backgroundColor: Color(0xFF0000A0),
                               foregroundColor: Colors.white,
                               padding: EdgeInsets.symmetric(
-                                  horizontal: isMobile ? 16 : 24,
-                                  vertical: 12
+                                horizontal: isMobile ? 16 : 24,
+                                vertical: 12,
                               ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -442,7 +473,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(height: 20),
                         // Container des détails du profil avec padding horizontal
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding,
+                          ),
                           child: ProfileDetailsBox(
                             isEditing: isEditing,
                             isMobile: isMobile,
@@ -456,7 +489,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             sexeController: sexeController,
                             oldPasswordController: oldPasswordController,
                             newPasswordController: newPasswordController,
-                            confirmPasswordController: confirmPasswordController,
+                            confirmPasswordController:
+                                confirmPasswordController,
                             onSave: () {
                               setState(() {
                                 isEditing = false;
@@ -469,148 +503,223 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(height: 20),
                         // Padding pour les boutons d'action
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : 100),
-                          child: !isEditing
-                              ? isMobile
-                              ? Column(
-                            // Version mobile : boutons en colonne
-                            children: [
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: toggleEditMode,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF0000A0),
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                                  ),
-                                  child: const Text('Modifier mon profil'),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Supprimer le profil'),
-                                          content: const Text('Êtes-vous sûr de vouloir supprimer votre profil ?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Annuler'),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isMobile ? 0 : 100,
+                          ),
+                          child:
+                              !isEditing
+                                  ? isMobile
+                                      ? Column(
+                                        // Version mobile : boutons en colonne
+                                        children: [
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: ElevatedButton(
+                                              onPressed: toggleEditMode,
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color(
+                                                  0xFF0000A0,
+                                                ),
+                                                foregroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 12,
+                                                    ),
+                                              ),
+                                              child: const Text(
+                                                'Modifier mon profil',
+                                              ),
                                             ),
-                                            TextButton(
-                                              onPressed: () {
-                                                // Action de suppression ici
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Supprimer'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFE1000F),
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                                  ),
-                                  child: const Text('Supprimer mon profil'),
-                                ),
-                              ),
-                            ],
-                          )
-                              : Row(
-                            // Version desktop : boutons en ligne
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: toggleEditMode,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF0000A0),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                                ),
-                                child: const Text('Modifier mon profil'),
-                              ),
-                              const SizedBox(width: 64),
-                              ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Supprimer le profil'),
-                                        content: const Text('Êtes-vous sûr de vouloir supprimer votre profil ?'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text('Annuler'),
                                           ),
-                                          TextButton(
-                                            onPressed: () {
-                                              // Action de suppression ici
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text('Supprimer'),
+                                          const SizedBox(height: 12),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (
+                                                    BuildContext context,
+                                                  ) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                        'Supprimer le profil',
+                                                      ),
+                                                      content: const Text(
+                                                        'Êtes-vous sûr de vouloir supprimer votre profil ?',
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                              context,
+                                                            ).pop();
+                                                          },
+                                                          child: const Text(
+                                                            'Annuler',
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            // Action de suppression ici
+                                                            Navigator.of(
+                                                              context,
+                                                            ).pop();
+                                                          },
+                                                          child: const Text(
+                                                            'Supprimer',
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color(
+                                                  0xFFE1000F,
+                                                ),
+                                                foregroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 12,
+                                                    ),
+                                              ),
+                                              child: const Text(
+                                                'Supprimer mon profil',
+                                              ),
+                                            ),
                                           ),
                                         ],
-                                      );
-                                    },
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFE1000F),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                      )
+                                      : Row(
+                                        // Version desktop : boutons en ligne
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: toggleEditMode,
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(
+                                                0xFF0000A0,
+                                              ),
+                                              foregroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 20,
+                                                    vertical: 12,
+                                                  ),
+                                            ),
+                                            child: const Text(
+                                              'Modifier mon profil',
+                                            ),
+                                          ),
+                                          const SizedBox(width: 64),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (
+                                                  BuildContext context,
+                                                ) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                      'Supprimer le profil',
+                                                    ),
+                                                    content: const Text(
+                                                      'Êtes-vous sûr de vouloir supprimer votre profil ?',
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(
+                                                            context,
+                                                          ).pop();
+                                                        },
+                                                        child: const Text(
+                                                          'Annuler',
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          // Action de suppression ici
+                                                          Navigator.of(
+                                                            context,
+                                                          ).pop();
+                                                        },
+                                                        child: const Text(
+                                                          'Supprimer',
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(
+                                                0xFFE1000F,
+                                              ),
+                                              foregroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 20,
+                                                    vertical: 12,
+                                                  ),
+                                            ),
+                                            child: const Text(
+                                              'Supprimer mon profil',
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                  : Center(
+                                    // Si on est en mode édition, on centre le bouton d'annulation
+                                    child: SizedBox(
+                                      width: isMobile ? double.infinity : null,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isEditing = false;
+                                          });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color(
+                                            0xFFE1000F,
+                                          ),
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                            vertical: 12,
+                                          ),
+                                        ),
+                                        child: const Text('< Annuler'),
+                                      ),
+                                    ),
                                   ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                                ),
-                                child: const Text('Supprimer mon profil'),
-                              ),
-                            ],
-                          )
-                              : Center(
-                            // Si on est en mode édition, on centre le bouton d'annulation
-                            child: SizedBox(
-                              width: isMobile ? double.infinity : null,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isEditing = false;
-                                  });
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFE1000F),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                                ),
-                                child: const Text('< Annuler'),
-                              ),
-                            ),
-                          ),
                         ),
                       ],
                     ),
@@ -708,61 +817,131 @@ class _ProfileDetailsBoxState extends State<ProfileDetailsBox> {
           // Grille de détails - responsive
           widget.isMobile
               ? Column(
-            // Version mobile : tous les champs en colonne
-            children: [
-              _buildField('Nom : ', widget.nomController, widget.isEditing),
-              const SizedBox(height: 16),
-              _buildField('Prénom : ', widget.prenomController, widget.isEditing),
-              const SizedBox(height: 16),
-              _buildField('Pseudo : ', widget.pseudoController, widget.isEditing),
-              const SizedBox(height: 16),
-              _buildField('Mot de passe : ', widget.passwordController, widget.isEditing, isPassword: true, enabled: false),
-              const SizedBox(height: 16),
-              _buildField('Date de naissance : ', widget.dateNaissanceController, widget.isEditing, enabled: false),
-              const SizedBox(height: 16),
-              _buildField('Email : ', widget.emailController, widget.isEditing),
-              const SizedBox(height: 16),
-              _buildField('Rôle : ', widget.roleController, widget.isEditing, enabled: false),
-              const SizedBox(height: 16),
-              _buildField('Sexe : ', widget.sexeController, widget.isEditing, enabled: false),
-            ],
-          )
+                // Version mobile : tous les champs en colonne
+                children: [
+                  _buildField('Nom : ', widget.nomController, widget.isEditing),
+                  const SizedBox(height: 16),
+                  _buildField(
+                    'Prénom : ',
+                    widget.prenomController,
+                    widget.isEditing,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildField(
+                    'Pseudo : ',
+                    widget.pseudoController,
+                    widget.isEditing,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildField(
+                    'Mot de passe : ',
+                    widget.passwordController,
+                    widget.isEditing,
+                    isPassword: true,
+                    enabled: false,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildField(
+                    'Date de naissance : ',
+                    widget.dateNaissanceController,
+                    widget.isEditing,
+                    enabled: false,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildField(
+                    'Email : ',
+                    widget.emailController,
+                    widget.isEditing,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildField(
+                    'Rôle : ',
+                    widget.roleController,
+                    widget.isEditing,
+                    enabled: false,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildField(
+                    'Sexe : ',
+                    widget.sexeController,
+                    widget.isEditing,
+                    enabled: false,
+                  ),
+                ],
+              )
               : Row(
-            // Version desktop : 2 colonnes
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Colonne de gauche
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildField('Nom : ', widget.nomController, widget.isEditing),
-                    const SizedBox(height: 16),
-                    _buildField('Prénom : ', widget.prenomController, widget.isEditing),
-                    const SizedBox(height: 16),
-                    _buildField('Pseudo : ', widget.pseudoController, widget.isEditing),
-                    const SizedBox(height: 16),
-                    _buildField('Mot de passe : ', widget.passwordController, widget.isEditing, isPassword: true, enabled: false),
-                  ],
-                ),
+                // Version desktop : 2 colonnes
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Colonne de gauche
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildField(
+                          'Nom : ',
+                          widget.nomController,
+                          widget.isEditing,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildField(
+                          'Prénom : ',
+                          widget.prenomController,
+                          widget.isEditing,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildField(
+                          'Pseudo : ',
+                          widget.pseudoController,
+                          widget.isEditing,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildField(
+                          'Mot de passe : ',
+                          widget.passwordController,
+                          widget.isEditing,
+                          isPassword: true,
+                          enabled: false,
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Colonne de droite
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildField(
+                          'Date de naissance : ',
+                          widget.dateNaissanceController,
+                          widget.isEditing,
+                          enabled: false,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildField(
+                          'Email : ',
+                          widget.emailController,
+                          widget.isEditing,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildField(
+                          'Rôle : ',
+                          widget.roleController,
+                          widget.isEditing,
+                          enabled: false,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildField(
+                          'Sexe : ',
+                          widget.sexeController,
+                          widget.isEditing,
+                          enabled: false,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              // Colonne de droite
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildField('Date de naissance : ', widget.dateNaissanceController, widget.isEditing, enabled: false),
-                    const SizedBox(height: 16),
-                    _buildField('Email : ', widget.emailController, widget.isEditing),
-                    const SizedBox(height: 16),
-                    _buildField('Rôle : ', widget.roleController, widget.isEditing, enabled: false),
-                    const SizedBox(height: 16),
-                    _buildField('Sexe : ', widget.sexeController, widget.isEditing, enabled: false),
-                  ],
-                ),
-              ),
-            ],
-          ),
           if (widget.isEditing)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -777,80 +956,107 @@ class _ProfileDetailsBoxState extends State<ProfileDetailsBox> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                _buildField('Ancien mot de passe : ', widget.oldPasswordController, true, isPassword: true),
+                _buildField(
+                  'Ancien mot de passe : ',
+                  widget.oldPasswordController,
+                  true,
+                  isPassword: true,
+                ),
                 const SizedBox(height: 10),
-                _buildField('Nouveau mot de passe : ', widget.newPasswordController, true, isPassword: true),
+                _buildField(
+                  'Nouveau mot de passe : ',
+                  widget.newPasswordController,
+                  true,
+                  isPassword: true,
+                ),
                 const SizedBox(height: 10),
-                _buildField('Confirmer le mot de passe : ', widget.confirmPasswordController, true, isPassword: true),
+                _buildField(
+                  'Confirmer le mot de passe : ',
+                  widget.confirmPasswordController,
+                  true,
+                  isPassword: true,
+                ),
                 const SizedBox(height: 20),
                 widget.isMobile
                     ? Column(
-                  // Version mobile : boutons en colonne
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: widget.onSave,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0000A0),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                      // Version mobile : boutons en colonne
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: widget.onSave,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF0000A0),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 12,
+                              ),
+                            ),
+                            child: const Text('Enregistrer le profil'),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         ),
-                        child: const Text('Enregistrer le profil'),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: widget.onPasswordChange,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0000A0),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: widget.onPasswordChange,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF0000A0),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 12,
+                              ),
+                            ),
+                            child: const Text('Changer le mot de passe'),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         ),
-                        child: const Text('Changer le mot de passe'),
-                      ),
-                    ),
-                  ],
-                )
+                      ],
+                    )
                     : Row(
-                  // Version desktop : boutons en ligne
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: widget.onSave,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0000A0),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                      // Version desktop : boutons en ligne
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: widget.onSave,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF0000A0),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                          ),
+                          child: const Text('Enregistrer le profil'),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      ),
-                      child: const Text('Enregistrer le profil'),
-                    ),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: widget.onPasswordChange,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0000A0),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                        const SizedBox(width: 20),
+                        ElevatedButton(
+                          onPressed: widget.onPasswordChange,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF0000A0),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                          ),
+                          child: const Text('Changer le mot de passe'),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      ),
-                      child: const Text('Changer le mot de passe'),
+                      ],
                     ),
-                  ],
-                ),
               ],
             ),
         ],
@@ -859,131 +1065,146 @@ class _ProfileDetailsBoxState extends State<ProfileDetailsBox> {
   }
 
   // Méthode pour construire un champ (lecture ou édition selon le mode)
-  Widget _buildField(String label, TextEditingController controller, bool isEditing, {bool isPassword = false, bool enabled = true}) {
+  Widget _buildField(
+    String label,
+    TextEditingController controller,
+    bool isEditing, {
+    bool isPassword = false,
+    bool enabled = true,
+  }) {
     if (isEditing) {
       return widget.isMobile
           ? Column(
-        // Version mobile : label au-dessus du champ
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF0000A0),
-            ),
-          ),
-          const SizedBox(height: 4),
-          TextField(
-            controller: controller,
-            enabled: enabled,
-            obscureText: isPassword,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF0000A0),
-            ),
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              isDense: true,
-              border: OutlineInputBorder(),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFF0000A0), width: 1.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFF0000A0), width: 2.0),
-              ),
-            ),
-          ),
-        ],
-      )
-          : Row(
-        // Version desktop : label à côté du champ
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF0000A0),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: TextField(
-              controller: controller,
-              enabled: enabled,
-              obscureText: isPassword,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xFF0000A0),
-              ),
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-                isDense: true,
-                border: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF0000A0), width: 1.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF0000A0), width: 2.0),
+            // Version mobile : label au-dessus du champ
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0000A0),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(),
+              const SizedBox(height: 4),
+              TextField(
+                controller: controller,
+                enabled: enabled,
+                obscureText: isPassword,
+                style: const TextStyle(fontSize: 14, color: Color(0xFF0000A0)),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 12,
+                  ),
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF0000A0),
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF0000A0),
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           )
-        ],
-      );
+          : Row(
+            // Version desktop : label à côté du champ
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0000A0),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: TextField(
+                  controller: controller,
+                  enabled: enabled,
+                  obscureText: isPassword,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF0000A0),
+                  ),
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 0,
+                      horizontal: 8,
+                    ),
+                    isDense: true,
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF0000A0),
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF0000A0),
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(flex: 1, child: Container()),
+            ],
+          );
     } else {
       return widget.isMobile
           ? Column(
-        // Version mobile : affichage en colonne
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF0000A0),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            controller.text,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF0000A0),
-            ),
-          ),
-        ],
-      )
+            // Version mobile : affichage en colonne
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0000A0),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                controller.text,
+                style: const TextStyle(fontSize: 14, color: Color(0xFF0000A0)),
+              ),
+            ],
+          )
           : RichText(
-        // Version desktop : affichage en ligne
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: label,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF0000A0),
-              ),
+            // Version desktop : affichage en ligne
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: label,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0000A0),
+                  ),
+                ),
+                TextSpan(
+                  text: controller.text,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF0000A0),
+                  ),
+                ),
+              ],
             ),
-            TextSpan(
-              text: controller.text,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xFF0000A0),
-              ),
-            ),
-          ],
-        ),
-      );
+          );
     }
   }
 }
