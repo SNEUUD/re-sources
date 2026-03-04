@@ -53,7 +53,7 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
 
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr/api/ressources/user/$userId'),
+        Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/ressources/user/$userId'),
       );
 
       if (response.statusCode == 200) {
@@ -92,7 +92,7 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
       try {
         final response = await http.delete(
           Uri.parse(
-            'http://chris-crp.freeboxos.fr/api/ressources/$idRessource',
+            'https://ccrepin.freeboxos.fr/projects/re-sources/api/ressources/$idRessource',
           ),
         );
 
@@ -174,7 +174,7 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
       builder: (ctx) {
         fetchCategories() async {
           final response = await http.get(
-            Uri.parse('http://chris-crp.freeboxos.fr/api/categories'),
+            Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/categories'),
           );
           if (response.statusCode == 200) {
             final List<dynamic> data = jsonDecode(response.body);
@@ -491,7 +491,7 @@ class _ResourcesUserViewState extends State<ResourcesUserView>
     try {
       final response = await http.put(
         Uri.parse(
-          'http://chris-crp.freeboxos.fr/api/ressources/${r['idRessource']}',
+          'https://ccrepin.freeboxos.fr/projects/re-sources/api/ressources/${r['idRessource']}',
         ),
 
         headers: {'Content-Type': 'application/json'},

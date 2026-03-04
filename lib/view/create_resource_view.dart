@@ -65,7 +65,7 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
 
   Future<List<Category>> fetchCategories() async {
     final response = await http.get(
-      Uri.parse('http://chris-crp.freeboxos.fr/api/categories'),
+      Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/categories'),
     );
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
@@ -102,7 +102,7 @@ class _CreateResourcePageState extends State<CreateResourcePage> {
         _selectedImageBytes != null ? base64Encode(_selectedImageBytes!) : null;
 
     final response = await http.post(
-      Uri.parse('http://chris-crp.freeboxos.fr/api/resources'),
+      Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/resources'),
 
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({

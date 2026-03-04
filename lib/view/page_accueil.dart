@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _fetchCategories() async {
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr/api/categories'),
+        Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/categories'),
       );
       if (response.statusCode == 200) {
         setState(() {

@@ -64,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _register() async {
     if (_formKey.currentState!.validate()) {
-      final url = Uri.parse('http://chris-crp.freeboxos.fr/api/register');
+      final url = Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/register');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
