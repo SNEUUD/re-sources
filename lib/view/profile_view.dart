@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr/api/profil/$userId'),
+        Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/profil/$userId'),
       );
 
       if (response.statusCode == 200) {
@@ -133,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       final response = await http.put(
-        Uri.parse('http://chris-crp.freeboxos.fr/api/profil/$userId/edit'),
+        Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/profil/$userId/edit'),
 
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -222,7 +222,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       final response = await http.put(
-        Uri.parse('http://chris-crp.freeboxos.fr/api/profil/$userId/password'),
+        Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/profil/$userId/password'),
 
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

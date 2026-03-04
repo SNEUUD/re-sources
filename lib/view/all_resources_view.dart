@@ -54,7 +54,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
     try {
       final response = await http.get(
         Uri.parse(
-          'http://chris-crp.freeboxos.fr/api/ressources/$ressourceId/commentaires',
+          'https://ccrepin.freeboxos.fr/projects/re-sources/api/ressources/$ressourceId/commentaires',
         ),
       );
 
@@ -86,7 +86,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
     try {
       final response = await http.post(
         Uri.parse(
-          'http://chris-crp.freeboxos.fr/api/ressources/$ressourceId/commentaire',
+          'https://ccrepin.freeboxos.fr/projects/re-sources/api/ressources/$ressourceId/commentaire',
         ),
 
         headers: {'Content-Type': 'application/json'},
@@ -111,7 +111,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
     try {
       final response = await http.get(
         Uri.parse(
-          'http://chris-crp.freeboxos.fr/api/ressources/$ressourceId/likes/$userId',
+          'https://ccrepin.freeboxos.fr/projects/re-sources/api/ressources/$ressourceId/likes/$userId',
         ),
       );
 
@@ -136,7 +136,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://chris-crp.freeboxos.fr/api/interactions'),
+        Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/interactions'),
 
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'userId': userId, 'ressourceId': ressourceId}),
@@ -153,7 +153,7 @@ class _AllResourcesViewState extends State<AllResourcesView> {
   Future<List<dynamic>> fetchAllResources() async {
     try {
       final response = await http.get(
-        Uri.parse('http://chris-crp.freeboxos.fr/api/ressourcesAll'),
+        Uri.parse('https://ccrepin.freeboxos.fr/projects/re-sources/api/ressourcesAll'),
       );
 
       if (response.statusCode == 200) {
